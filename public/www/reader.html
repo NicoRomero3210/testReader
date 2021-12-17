@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html mozdisallowselectionprint moznomarginboxes>
+	<head>
+		<meta name="referrer" content="no-referrer-when-downgrade" />
+		<meta charset="utf-8" />
+		<meta
+			name="viewport"
+			content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"
+		/>
+		<meta name="apple-mobile-web-app-capable" content="yes" />
+		<meta name="google" content="notranslate" />
+		<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+
+		<title>Project Volpe</title>
+
+		<!-- @here -->
+		<script src="./volpe-assets/js/jquery-3.4.1.min.js?id=f832e36068ab203a3f89"></script>
+
+		<!-- <style>
+      html,
+      body {
+        padding: 0;
+        margin: 0;
+        background-color: transparent;
+        transition: all 300ms ease-in;
+        opacity: 0;
+      }
+    </style> -->
+
+		<!-- Use this to debug Vue remotely -->
+		<!-- <script>
+        window.__VUE_DEVTOOLS_HOST__ = 'http://8e9f8f3d.ngrok.io' // default: localhost
+        window.__VUE_DEVTOOLS_PORT__ = '80' // default: 8098
+      </script>
+    <script src="http://8e9f8f3d.ngrok.io"></script> -->
+
+		<script>
+			/**
+			 * This is not compiled, so it's important that we write JS that's compatible with any browser.
+			 * That means no let/const, no short arrow functions, etc.
+			 * Only old school JS.
+			 */
+
+			// window.__HOST_LOCATION__ is later using in the loading process
+			// window.parent.postMessage('llegue', 'http://127.0.0.1:3000/www/index.html');
+			var setHostLocation = function (e) {
+				//   if (e.data.target !== 'volpe') return;
+				//   if (e.data.connectorVersionTarget !== 'volpe:1.0.0') return;
+				//   if (typeof e.data.timestamp !== 'number') return;
+				//   if (e.data.type !== 'event') return;
+				//   if (e.data.name !== 'setHostLocation') return;
+				//   if (e.data.payload.hostLocation === undefined) return;
+				console.log('arrive');
+				var data = JSON.parse(e.data);
+				console.log(data);
+				window.__HOST_LOCATION__ = data.payload.hostLocation;
+				// window.removeEventListener('message', setHostLocation, false);
+			};
+			window.addEventListener('message', setHostLocation);
+			var whereIam;
+			if (window.location !== window.parent.location) {
+				// The page is in an iFrames
+				whereIam = 'iframe';
+				document.write('The page is in an iFrame');
+			} else {
+				whereIam = 'another place';
+				console.log('aguante boca');
+			}
+			window.parent.postMessage(whereIam, '*');
+			// document.addEventListener('message', setHostLocation, false);
+		</script>
+
+		<link
+			href="./volpe-assets/css/app.css?id=f8f8fa1b0944590db4ca"
+			type="text/css"
+			rel="stylesheet"
+		/>
+	</head>
+
+	<body>
+		<div id="Reader"></div>
+		<h1>Soy el Reader</h1>
+
+		<script src="./volpe-assets/js/app.js?id=f88b0251503aec0844f8"></script>
+	</body>
+</html>

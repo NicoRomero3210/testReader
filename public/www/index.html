@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8" />
+		<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<title>Aguante boca</title>
+		<link rel="stylesheet" type="text/css" href="./testFolder/test.css" />
+	</head>
+	<body style="height: 100%; width: 100%; background-color: red">
+		<script>
+			var isLoaded = false;
+			function loadingIframe() {
+				var hearEvents = function (e) {
+					console.log(e.data);
+					console.log('me llego un evento desde el reader');
+					console.log(e.data);
+				};
+				if (isLoaded === false) {
+					var iframeLogs = document.getElementById('myiframe').contentWindow;
+					console.log('loading');
+					document.getElementById('myiframe').src =
+						'http://127.0.0.1:3000/www/reader.html';
+					isLoaded = true;
+					window.addEventListener('message', hearEvents);
+				}
+				document.getElementById('myiframe').contentWindow.postMessage(
+					JSON.stringify({
+						target: 'volpe',
+						connectorVersionTarget: 'volpe:1.0.0',
+						timestamp: Date.now(),
+						type: 'event',
+						name: 'setHostLocation',
+						isFromWebView: true,
+						// readerHost: 'http://192.168.0.11:8080/reader.html',
+						payload: {
+							hostLocation: '*',
+						},
+					}),
+					'*'
+				);
+			}
+		</script>
+		<h1 class="testClass">Hola reader</h1>
+		<iframe
+			style="width: 100%; height: 100%"
+			id="myiframe"
+			onload="loadingIframe()"
+		></iframe>
+	</body>
+</html>
