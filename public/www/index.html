@@ -4,28 +4,109 @@
 		<meta charset="UTF-8" />
 		<meta http-equiv="X-UA-Compatible" content="IE=edge" />
 		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
-		<title>Aguante boca</title>
-		<link rel="stylesheet" type="text/css" href="./testFolder/test.css" />
+		<title>Reader Init</title>
+		<link
+			rel="stylesheet"
+			type="text/css"
+			href="http://192.168.0.15:3000/www/testFolder/test.css"
+		/>
 	</head>
-	<body style="height: 100%; width: 100%; background-color: red">
+	<body>
 		<script>
 			var isLoaded = false;
 			function loadingIframe() {
-				var hearEvents = function (e) {
-					console.log(e.data);
-					console.log('me llego un evento desde el reader');
-					console.log(e.data);
+				var eventsListener = function (e) {
+					console.log('data en index', e.data);
+					console.log(typeof e);
+					var data;
+					if (typeof e === 'string') {
+						data = JSON.parse(e.data);
+					} else {
+						data = e.data;
+					}
+					if (data.name === 'readerInitialized') {
+						console.log('entre al reader session');
+						document.getElementById('myiframe').contentWindow.postMessage(
+							{
+								preview_mode: false,
+								token:
+									'eyJpdiI6InVJOWkzNDVmcHJHeHdJOE82bWVsalE9PSIsInZhbHVlIjoiK2NvWlgvTHVmdE42eUhCYXAxaHVrWUVtWklkcFZEcm9iS2FBTWFXN0JrMm5CbFdKT3U0OTlWbmVMclNVZFpYTyIsIm1hYyI6ImY3YTExYTRlOGIwNDc0OWE0ZjM4MThhODRhOGRlNTJjZDMyYmIzYjg1MjUzYWIxMDFhNTQwZDk5Y2IyNWYzNGMiLCJ0YWciOiIifQ==',
+								coniglio_track_token:
+									'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiIsImp0aSI6IjdjZDI2OTFlLTNkOWUtNDFmNC05OTg3LWIwYzVjODQ5NjVlNyJ9.eyJpc3MiOiJmYXJmYWxsYSIsImF1ZCI6ImNvbmlnbGlvIiwianRpIjoiODMwNzNlY2QtOTc3NS00MmI4LWJmM2ItOTM0NDY4ZTI0OGNmIiwiaWF0IjoxNjM5OTQ5Nzk2LCJzdWIiOiJyZWFkaW5nX3Nlc3Npb24iLCJ0ZW5hbnRfaWQiOjU2MCwiaXNzdWVfaWQiOjYyNjE2OCwidXNlcl9pZCI6MTU2NzM0LCJyZWFzb25fdG9fYWNjZXNzIjp7InR5cGUiOiJnbG9iYWxfc3Vic2NyaXB0aW9uIiwidmFsdWUiOjIzNDE5fX0.9X34NSbIzQVzlo--Q2C0RVkmWNkvkYIaVBDYBBGGJZ4',
+								features: {
+									tts: false,
+									search: false,
+									concurrency_limit: false,
+									chinese_voice: false,
+								},
+								settings: {
+									tenant: {
+										lang: 'en',
+										reader_token_session_url:
+											'https://rsbooks.publicala.me/api/v1/reader/session',
+										exit_url: 'https://rsbooks.publicala.me/library',
+										reader: {
+											tts: false,
+											theme: 'light',
+											layout: 'scroll',
+											elefante: [],
+											create_notes: false,
+											customStyles: null,
+											pdf: {
+												layout: 'scroll',
+											},
+										},
+										preview: true,
+									},
+									user: {
+										pdf: {
+											layout: null,
+										},
+										epub: {
+											zoom: null,
+											layout: null,
+										},
+										theme: 'light',
+									},
+								},
+								issue: {
+									name: 'MP3_5MB_132s',
+									description: '',
+									file_type: 'audio',
+									tags: [],
+									issue_url: 'https://rsbooks.publicala.me/reader/mp3-5mb-132s',
+									issue_full_url:
+										'https://staging-farfalla.publica.la/api/v2/reader/settings/626168',
+									issue_tenant_id: 560,
+									publication_date: '2021',
+									user: {
+										issue_is_favorite: false,
+										last_location: {
+											currentSeek: 0,
+											currentTrack: 0,
+										},
+									},
+									twitter_user: '',
+								},
+								volpe_url: 'https://staging.volpe.publica.la',
+								volpe_url_proxied: 'https://staging.volpe.publica.la',
+								anonymous_session: null,
+								offline_issue: null,
+							},
+							'*'
+						);
+					}
+					// window.ReactNativeWebView.postMessage(JSON.stringify(data));
 				};
 				if (isLoaded === false) {
-					var iframeLogs = document.getElementById('myiframe').contentWindow;
-					console.log('loading');
-					document.getElementById('myiframe').src =
-						'http://127.0.0.1:3000/www/reader.html';
 					isLoaded = true;
-					window.addEventListener('message', hearEvents);
+					document.getElementById('myiframe').src =
+						'http://192.168.0.15:3000/www/reader.html';
+					document.addEventListener('message', eventsListener);
+					window.addEventListener('message', eventsListener);
 				}
 				document.getElementById('myiframe').contentWindow.postMessage(
-					JSON.stringify({
+					{
 						target: 'volpe',
 						connectorVersionTarget: 'volpe:1.0.0',
 						timestamp: Date.now(),
@@ -36,16 +117,12 @@
 						payload: {
 							hostLocation: '*',
 						},
-					}),
+					},
 					'*'
 				);
 			}
 		</script>
-		<h1 class="testClass">Hola reader</h1>
-		<iframe
-			style="width: 100%; height: 100%"
-			id="myiframe"
-			onload="loadingIframe()"
-		></iframe>
+		<h1 class="testClass">Reader Init</h1>
+		<iframe id="myiframe" onload="loadingIframe()"></iframe>
 	</body>
 </html>

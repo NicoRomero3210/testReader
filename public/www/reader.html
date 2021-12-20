@@ -34,42 +34,6 @@
       </script>
     <script src="http://8e9f8f3d.ngrok.io"></script> -->
 
-		<script>
-			/**
-			 * This is not compiled, so it's important that we write JS that's compatible with any browser.
-			 * That means no let/const, no short arrow functions, etc.
-			 * Only old school JS.
-			 */
-
-			// window.__HOST_LOCATION__ is later using in the loading process
-			// window.parent.postMessage('llegue', 'http://127.0.0.1:3000/www/index.html');
-			var setHostLocation = function (e) {
-				//   if (e.data.target !== 'volpe') return;
-				//   if (e.data.connectorVersionTarget !== 'volpe:1.0.0') return;
-				//   if (typeof e.data.timestamp !== 'number') return;
-				//   if (e.data.type !== 'event') return;
-				//   if (e.data.name !== 'setHostLocation') return;
-				//   if (e.data.payload.hostLocation === undefined) return;
-				console.log('arrive');
-				var data = JSON.parse(e.data);
-				console.log(data);
-				window.__HOST_LOCATION__ = data.payload.hostLocation;
-				// window.removeEventListener('message', setHostLocation, false);
-			};
-			window.addEventListener('message', setHostLocation);
-			var whereIam;
-			if (window.location !== window.parent.location) {
-				// The page is in an iFrames
-				whereIam = 'iframe';
-				document.write('The page is in an iFrame');
-			} else {
-				whereIam = 'another place';
-				console.log('aguante boca');
-			}
-			window.parent.postMessage(whereIam, '*');
-			// document.addEventListener('message', setHostLocation, false);
-		</script>
-
 		<link
 			href="./volpe-assets/css/app.css?id=f8f8fa1b0944590db4ca"
 			type="text/css"
